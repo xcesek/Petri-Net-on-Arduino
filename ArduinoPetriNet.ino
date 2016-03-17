@@ -1,8 +1,11 @@
 #include <Servo.h>
 
 #include "Helper.h"
+#include "Enums.h"
 #include "Place.h"
 #include "Transition.h"
+#include "Arc.h"
+
 
 // ====== places ======
 Place *place0;
@@ -16,6 +19,11 @@ Transition *transition10;
 Transition **allTransitions;
 int allTransitionsCount;
 
+// ====== arcs ======
+Arc *arc01;
+Arc *arc10;
+Arc **allArcs;
+int allArcsCount;
 
 void setup()
 {
@@ -27,6 +35,9 @@ void setup()
   
   allTransitionsCount = 2;
   allTransitions = (Transition**) malloc(allTransitionsCount*sizeof(Transition*));
+  
+  allArcsCount = 2;
+  allArcs = (Arc**) malloc(allArcsCount*sizeof(Arc*));
 
 
   // ====== places ======
@@ -65,6 +76,15 @@ void setup()
   
   transition10 = new Transition("t10", 4, digitalIn, inPlacesT10, 1, outPlacesT10, 1);
   allTransitions[1] = transition10;
+  
+  // ====== arcs ======
+  arc01 = new Arc(place0, place1);
+  allArcs[0] = arc01;
+  
+  arc10 = new Arc(place1, place0);
+  allArcs[1] = arc10;
+  
+  
 }
 
 void loop()
@@ -80,6 +100,6 @@ void loop()
   }
     
   Serial.println("=================================================");
-  delay(300);
+  delay(7000);
 }
 

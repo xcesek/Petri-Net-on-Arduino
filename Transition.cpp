@@ -1,11 +1,11 @@
 #include "Arduino.h"
 #include "Transition.h"
+#include "Helper.h"
+#include "Enums.h"
 
 Transition::Transition(char* _id, Place **_inPlaces, int _inPlacesCount, Place **_outPlaces, int _outPlacesCount)
-{
-  id = _id;
-  extended = 0;
-  
+: Node(_id)
+{  
   inPlaces = _inPlaces;
   inPlacesCount = _inPlacesCount;
   outPlaces = _outPlaces;
@@ -18,12 +18,8 @@ Transition::Transition(char* _id, Place **_inPlaces, int _inPlacesCount, Place *
 
 
 Transition::Transition(char* _id, int _pin, FunctionType _functionType, Place **_inPlaces, int _inPlacesCount, Place **_outPlaces, int _outPlacesCount)
-{
-  id = _id;
-  pin = _pin;
-  extended = 1;
-  functionType = _functionType;
-  
+: Node(_id, _pin, _functionType)
+{ 
   inPlaces = _inPlaces;
   inPlacesCount = _inPlacesCount;
   outPlaces = _outPlaces;

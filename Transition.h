@@ -3,16 +3,12 @@
 
 #include "Arduino.h"
 #include "Helper.h"
+#include "Enums.h"
 #include "Place.h"
 
-class Transition
+class Transition : public Node
 {
   private:
-    char *id;
-    int pin;
-    FunctionType functionType;
-    int extended;
-    
     Place **inPlaces;
     int inPlacesCount;
     Place **outPlaces;

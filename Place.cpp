@@ -1,25 +1,22 @@
 #include "Arduino.h"
+#include "Node.h"
 #include "Place.h"
+#include "Helper.h"
+#include "Enums.h"
+
 
 
 Place::Place(char* _id)
+: Node(_id)
 {
-  id = _id;
-  extended = 0;
-  tokens = 0;
-  
+  tokens = 0; 
   capacity = 100000;
 }
 
 Place::Place(char* _id, int _pin, FunctionType _functionType)
+: Node(_id, _pin, _functionType)
 {
-  id = _id;
-  pin = _pin;
-  functionType = _functionType;
-  
-  extended = 1;
-  tokens = 0;
-  
+  tokens = 0; 
   capacity = 100000;
   
   Serial.print("(place) initializing -> "); Serial.print(id);  Serial.print(" -> ");
