@@ -4,8 +4,8 @@
 #include "Enums.h"
 
 Arc::Arc(Node *_source, Node *_destination) {
-  _source = source; 
-  _destination = destination;
+  source = _source; 
+  destination = _destination;
   type = standard;
   multiplicity = 1;
 }
@@ -23,6 +23,14 @@ int Arc::getMultiplicity() {
 
 ArcType Arc::getType() {
   return type;
+}
+
+Node* Arc::getSource() {
+  return source;
+}
+
+Node* Arc::getDestination() {
+  return destination;
 }
 
 Node* Arc::getPlaceNode() {

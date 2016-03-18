@@ -13,19 +13,17 @@ class Transition : public Node
     Arc **connectedArcs;
     int connectedArcsCount;
     
-    Place **inPlaces;
-    int inPlacesCount;
-    Place **outPlaces;
-    int outPlacesCount;
     int analogTreshold;
     int analogTresholdRangeLow;
     int analogTresholdRangeHigh;
     
   public:
-    Transition(char* id, Place **_inPlaces, int _inPlacesCount, Place **_outPlaces, int _outPlacesCount);
-    Transition(char* id, int _pin, FunctionType _functionType, Place **_inPlaces, int _inPlacesCount, Place **_outPlaces, int _outPlacesCount);
+    Transition(char* id);
+    Transition(char* id, int _pin, FunctionType _functionType);
     void fire();
     int isEnabled();
+    void setConnectedArcs(Arc **arcs);
+    void setConnectedArcsCount(int count);
     Arc **getConnectedArcs();
     int getConnectedArcsCount();
     

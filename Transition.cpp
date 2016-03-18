@@ -4,28 +4,18 @@
 #include "Helper.h"
 #include "Enums.h"
 
-Transition::Transition(char* _id, Place **_inPlaces, int _inPlacesCount, Place **_outPlaces, int _outPlacesCount)
+Transition::Transition(char* _id)
 : Node(_id, transitionType)
 {  
-  inPlaces = _inPlaces;
-  inPlacesCount = _inPlacesCount;
-  outPlaces = _outPlaces;
-  outPlacesCount = _outPlacesCount;
-  
   analogTreshold = -1;
   analogTresholdRangeLow = -1;
   analogTresholdRangeHigh = -1;
 }
 
 
-Transition::Transition(char* _id, int _pin, FunctionType _functionType, Place **_inPlaces, int _inPlacesCount, Place **_outPlaces, int _outPlacesCount)
+Transition::Transition(char* _id, int _pin, FunctionType _functionType)
 : Node(_id, transitionType, _pin, _functionType)
 { 
-  inPlaces = _inPlaces;
-  inPlacesCount = _inPlacesCount;
-  outPlaces = _outPlaces;
-  outPlacesCount = _outPlacesCount;
-  
   analogTreshold = -1;
   analogTresholdRangeLow = -1;
   analogTresholdRangeHigh = -1;
@@ -58,30 +48,40 @@ void Transition::fire()
 {
   Serial.print("(transition) firing "); Serial.println(id);
   Serial.print("   (transition) funtions: "); Serial.println(functionType);
-  Serial.print("   (transition) inPlacesCount: "); Serial.println(inPlacesCount);
-  Serial.print("   (transition) outPlacesCount: "); Serial.println(outPlacesCount);
+  Serial.print("   (transition) connectedArcsCount: "); Serial.println(connectedArcsCount);
   
-  for (int i = 0; i < inPlacesCount; i++) {
-    inPlaces[i]->removeTokens(1);
+  for (int i = 0; i < connectedArcsCount; i++) {
+    Node *source = connectedArcs[i]->getSource();
+    if (source->getNodeType() == placeType) {
+      Place *place = (Place*) source;
+      place->removeTokens(connectedArcs[i]->getMultiplicity());
+    }
   }
   // delay ?
   
-  for (int i = 0; i < outPlacesCount; i++) {
-    outPlaces[i]->addTokens(1);
+  for (int i = 0; i < connectedArcsCount; i++) {
+    Node *destination = connectedArcs[i]->getDestination();
+    if (destination->getNodeType() == placeType) {
+      Place *place = (Place*) destination;
+      place->addTokens(connectedArcs[i]->getMultiplicity());
+    }
   }
 }
 
 int Transition::isEnabled()
 {
-  Serial.print("(transition) isActive? "); Serial.println(id);
-  int internalTriggerActive = 0;
+  Serial.print("(transition) isEnabled? "); Serial.println(id);
 
-  // internal guard
-  internalTriggerActive = 1;
-  for (int i = 0; i < inPlacesCount; i++) {
-    if (inPlaces[i]->getTokens() < 1) internalTriggerActive = 0;
+  // internal condition
+  int internalTriggerActive = 1;
+  for (int i = 0; i < connectedArcsCount; i++) {
+    Node *source = connectedArcs[i]->getSource();
+    if (source->getNodeType() == placeType) {
+      Place *place = static_cast<Place*>(source);
+      if (place->getTokens() < connectedArcs[i]->getMultiplicity()) internalTriggerActive = 0;
+    }
   }
-  Serial.print("(transition) internal > "); Serial.println(internalTriggerActive);
+  Serial.print("(transition) internal : "); Serial.println(internalTriggerActive);
   if (!extended) {
     return internalTriggerActive; 
   }
@@ -113,6 +113,14 @@ int Transition::isEnabled()
   }
   Serial.print("   (transition) isActive: "); Serial.println(internalTriggerActive && externalTriggerActive);
   return internalTriggerActive && externalTriggerActive;
+}
+
+void Transition::setConnectedArcs(Arc **arcs) {
+  connectedArcs = arcs;
+}
+
+void Transition::setConnectedArcsCount(int count) {
+  connectedArcsCount = count;
 }
 
 Arc **Transition::getConnectedArcs() {

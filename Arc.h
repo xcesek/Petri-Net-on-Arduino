@@ -19,6 +19,8 @@ class Arc
     Arc(Node *source, Node *destination, ArcType type, int multiplicity);
     int getMultiplicity();
     ArcType getType();
+    Node* getSource();
+    Node* getDestination();
     Node* getPlaceNode();
     Node* getTransitionNode();
 };
