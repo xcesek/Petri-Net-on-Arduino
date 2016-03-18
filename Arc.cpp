@@ -24,3 +24,13 @@ int Arc::getMultiplicity() {
 ArcType Arc::getType() {
   return type;
 }
+
+Node* Arc::getPlaceNode() {
+  if (source->getNodeType() == placeType) return source;
+  else return destination;
+}
+
+Node* Arc::getTransitionNode() {
+if (source->getNodeType() == transitionType) return source;
+  else return destination;
+}

@@ -1,10 +1,11 @@
 #include "Arduino.h"
 #include "Transition.h"
+#include "Arc.h"
 #include "Helper.h"
 #include "Enums.h"
 
 Transition::Transition(char* _id, Place **_inPlaces, int _inPlacesCount, Place **_outPlaces, int _outPlacesCount)
-: Node(_id)
+: Node(_id, transitionType)
 {  
   inPlaces = _inPlaces;
   inPlacesCount = _inPlacesCount;
@@ -18,7 +19,7 @@ Transition::Transition(char* _id, Place **_inPlaces, int _inPlacesCount, Place *
 
 
 Transition::Transition(char* _id, int _pin, FunctionType _functionType, Place **_inPlaces, int _inPlacesCount, Place **_outPlaces, int _outPlacesCount)
-: Node(_id, _pin, _functionType)
+: Node(_id, transitionType, _pin, _functionType)
 { 
   inPlaces = _inPlaces;
   inPlacesCount = _inPlacesCount;
@@ -70,7 +71,7 @@ void Transition::fire()
   }
 }
 
-int Transition::isActive()
+int Transition::isEnabled()
 {
   Serial.print("(transition) isActive? "); Serial.println(id);
   int internalTriggerActive = 0;
@@ -112,6 +113,14 @@ int Transition::isActive()
   }
   Serial.print("   (transition) isActive: "); Serial.println(internalTriggerActive && externalTriggerActive);
   return internalTriggerActive && externalTriggerActive;
+}
+
+Arc **Transition::getConnectedArcs() {
+  return connectedArcs;
+}
+
+int Transition::getConnectedArcsCount() {
+  return connectedArcsCount;
 }
 
 void Transition::setAnalogTreshold(int _analogTreshold) {

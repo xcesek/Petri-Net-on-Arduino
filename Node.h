@@ -9,13 +9,15 @@ class Node
 {
   protected:
     char *id;
+    NodeType nodeType;
     int pin;
     FunctionType functionType;
     int extended;
     
   public:
-    Node(char* id);
-    Node(char* id, int _pin, FunctionType _functionType);
+    Node(char* id, NodeType _nodeType);
+    Node(char* id, NodeType _nodeType, int _pin, FunctionType _functionType);
+    NodeType getNodeType();
 };
 
 #endif

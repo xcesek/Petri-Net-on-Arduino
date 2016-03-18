@@ -55,7 +55,7 @@ void setup()
   
   
   // ====== transitions ======  
-  // 0.
+  // 0.th transition
   Place **inPlacesT01 = (Place**) malloc(10*sizeof(Place*));
   inPlacesT01[0] = place0;  
   
@@ -67,7 +67,7 @@ void setup()
   //transition01->setAnalogTresholdRange(80, 150);
   allTransitions[0] = transition01;
   
-  // 1.
+  // 1. st transition
   Place **inPlacesT10 = (Place**) malloc(3*sizeof(Place*));
   inPlacesT10[0] = place1;  
   
@@ -90,7 +90,7 @@ void setup()
 void loop()
 {  
   for (int i = 0; i < allTransitionsCount; i++) {
-    if (allTransitions[i]->isActive()) {     // todo: more facny logic
+    if (allTransitions[i]->isEnabled()) {     // todo: more facny logic
       allTransitions[i]->fire();
     }
   }

@@ -5,8 +5,6 @@
 #include "Helper.h"
 #include "Enums.h"
 #include "Node.h"
-#include "Place.h"
-#include "Transition.h"
 
 class Arc
 {
@@ -21,6 +19,8 @@ class Arc
     Arc(Node *source, Node *destination, ArcType type, int multiplicity);
     int getMultiplicity();
     ArcType getType();
+    Node* getPlaceNode();
+    Node* getTransitionNode();
 };
 
 #endif

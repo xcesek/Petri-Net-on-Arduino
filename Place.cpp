@@ -7,14 +7,14 @@
 
 
 Place::Place(char* _id)
-: Node(_id)
+: Node(_id, placeType)
 {
   tokens = 0; 
   capacity = 100000;
 }
 
 Place::Place(char* _id, int _pin, FunctionType _functionType)
-: Node(_id, _pin, _functionType)
+: Node(_id, placeType, _pin, _functionType)
 {
   tokens = 0; 
   capacity = 100000;

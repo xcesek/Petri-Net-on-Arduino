@@ -12,4 +12,12 @@ enum ArcType {
   standard, inhibitor, test
 };
 
+enum NodeType {
+  placeType, transitionType
+};
+
+enum logLevel {
+  info, debug, warn, error 
+};
+
 #endif
