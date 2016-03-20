@@ -7,36 +7,36 @@
 Transition::Transition(char* _id)
 : Node(_id, transitionType)
 {  
-  analogTreshold = -1;
-  analogTresholdRangeLow = -1;
-  analogTresholdRangeHigh = -1;
+  analogThreshold = -1;
+  analogThresholdRangeLow = -1;
+  analogThresholdRangeHigh = -1;
 }
 
 
 Transition::Transition(char* _id, int _pin, FunctionType _functionType)
 : Node(_id, transitionType, _pin, _functionType)
 { 
-  analogTreshold = -1;
-  analogTresholdRangeLow = -1;
-  analogTresholdRangeHigh = -1;
+  analogThreshold = -1;
+  analogThresholdRangeLow = -1;
+  analogThresholdRangeHigh = -1;
   
   Serial.print("(transition) initializing -> "); Serial.print(id);  Serial.print(" -> ");
   
   switch (functionType) {
-    case digitalIn:
+    case DIGITAL_IN:
       pinMode(pin, INPUT);
       Serial.println("digitalIn");
       break;
-    case digitalOut: 
+    case DIGITAL_OUT: 
       // what?
       pinMode(pin, OUTPUT);
       Serial.println("digitalOut");
       break;
-    case analogIn:
+    case ANALOG_IN:
       // nothing to do - works out of the box
       Serial.println("analogIn");
       break;
-    case analogOut: 
+    case ANALOG_OUT: 
       // what?
       pinMode(pin, OUTPUT);  //yes, analog out is done through PWM
       Serial.println("analogOut");
@@ -90,24 +90,24 @@ int Transition::isEnabled()
   int readValue;
   int externalTriggerActive = 0;
   switch (functionType) {
-    case digitalIn:
+    case DIGITAL_IN:
       readValue = digitalRead(pin);
       Serial.print("   (transition) digital read value: "); Serial.println(readValue);
       if(readValue == 1) externalTriggerActive = 1;
       break;
       
-    case digitalOut: 
+    case DIGITAL_OUT: 
       // what?
       break;
       
-    case analogIn:
+    case ANALOG_IN:
       readValue = analogRead(pin);
       Serial.print("   (transition) analog read value: "); Serial.println(readValue);
-      if((analogTreshold != -1) && (readValue > analogTreshold)) externalTriggerActive = 1;
-      if((analogTresholdRangeLow != -1) && (analogTresholdRangeLow < readValue) && (readValue < analogTresholdRangeHigh)) externalTriggerActive = 1;
+      if((analogThreshold != -1) && (readValue > analogThreshold)) externalTriggerActive = 1;
+      if((analogThresholdRangeLow != -1) && (analogThresholdRangeLow < readValue) && (readValue < analogThresholdRangeHigh)) externalTriggerActive = 1;
       break;
       
-    case analogOut: 
+    case ANALOG_OUT: 
       // what?
       break;
   }
@@ -131,15 +131,15 @@ int Transition::getConnectedArcsCount() {
   return connectedArcsCount;
 }
 
-void Transition::setAnalogTreshold(int _analogTreshold) {
-  analogTreshold = _analogTreshold;
-  Serial.print("(transition) setting analogTreshold: "); Serial.println(analogTreshold);
+void Transition::setAnalogThreshold(int _analogThreshold) {
+  analogThreshold = _analogThreshold;
+  Serial.print("(transition) setting analogThreshold: "); Serial.println(analogThreshold);
 }
 
-void Transition::setAnalogTresholdRange(int _analogTresholdRangeLow, int _analogTresholdRangeHigh) {
-  analogTresholdRangeLow = _analogTresholdRangeLow;
-  analogTresholdRangeHigh = _analogTresholdRangeHigh;
-  Serial.print("(transition) setting analogTresholdRange: "); Serial.print(analogTresholdRangeLow);Serial.print(" - ");Serial.println(analogTresholdRangeHigh);
+void Transition::setAnalogThresholdRange(int _analogThresholdRangeLow, int _analogThresholdRangeHigh) {
+  analogThresholdRangeLow = _analogThresholdRangeLow;
+  analogThresholdRangeHigh = _analogThresholdRangeHigh;
+  Serial.print("(transition) setting analogThresholdRange: "); Serial.print(analogThresholdRangeLow);Serial.print(" - ");Serial.println(analogThresholdRangeHigh);
 }
 
 

@@ -5,11 +5,11 @@
 
 
 enum FunctionType {
-  digitalIn, digitalOut, analogIn, analogOut, 
-  servo, PWMmotor, buzzer,
-  diode, 
-  potentiometer, thermometer, microphone, ultrasonicSensor,
-  button
+  DIGITAL_IN, DIGITAL_OUT, ANALOG_IN, ANALOG_OUT, 
+  SERVO, PWM_MOTOR,
+  DIODE, 
+  POTENTIOMETER, THERMOMETER, MICROPHONE, ULTRASONIC_SENSOR,
+  BUTTON
 };
 
 enum ArcType {

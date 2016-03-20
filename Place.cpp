@@ -23,23 +23,23 @@ Place::Place(char* _id, int _pin, FunctionType _functionType)
   
   
   switch (functionType) {
-    case digitalIn:
+    case DIGITAL_IN:
       pinMode(pin, INPUT);   // not applicable -> do not initialize?
       Serial.println("digitalIn");
       break;
-    case digitalOut: 
+    case DIGITAL_OUT: 
       pinMode(pin, OUTPUT);
       Serial.println("digitalOut");
       break;
-    case analogIn:
+    case ANALOG_IN:
       // nothing to do - works out of the box
       Serial.println("analogIn");
       break;
-    case analogOut: 
+    case ANALOG_OUT: 
       pinMode(pin, OUTPUT);  //yes, analog out is done through PWM
       Serial.println("analogOut");
       break;
-    case servo:
+    case SERVO:
      myservo.attach(pin);
      Serial.println("servo");
      break;
@@ -56,26 +56,26 @@ void Place::apply()
   if (!extended) return;
   
   switch (functionType) {
-    case digitalIn:
+    case DIGITAL_IN:
       // not applicable
       break;
       
-    case digitalOut: 
+    case DIGITAL_OUT: 
       Serial.print("   (place) digital out: "); Serial.println(tokens > 0);
-      if (tokens > 0)  digitalWrite(pin, HIGH);
+      if (tokens > 0)  digitalWrite(pin, HIGH);  
       else digitalWrite(pin, LOW);
       break;
       
-    case analogIn:
+    case ANALOG_IN:
       // not applicable
       break;
       
-    case analogOut: 
+    case ANALOG_OUT: 
       Serial.print("   (place) analog out: "); Serial.println((int)(tokens/(capacity*1.0)*255));
       analogWrite(pin, (int)(tokens/(capacity*1.0)*255));
       break;
       
-    case servo:    
+    case SERVO:    
       Serial.print("   (place) servo: "); Serial.println((int)(tokens/(capacity*1.0)*180));  
       myservo.write((int)(tokens/(capacity*1.0)*180)); 
       break;

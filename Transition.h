@@ -13,9 +13,9 @@ class Transition : public Node
     Arc **connectedArcs;
     int connectedArcsCount;
     
-    int analogTreshold;
-    int analogTresholdRangeLow;
-    int analogTresholdRangeHigh;
+    int analogThreshold;
+    int analogThresholdRangeLow;
+    int analogThresholdRangeHigh;
     
   public:
     Transition(char* id);
@@ -27,8 +27,8 @@ class Transition : public Node
     Arc **getConnectedArcs();
     int getConnectedArcsCount();
     
-    void setAnalogTreshold(int _analogTreshold);
-    void setAnalogTresholdRange(int _analogTresholdRangeLow, int _analogTresholdRangeHigh);
+    void setAnalogThreshold(int _analogTreshold);
+    void setAnalogThresholdRange(int _analogTresholdRangeLow, int _analogTresholdRangeHigh);
 };
 
 #endif

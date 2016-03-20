@@ -1,5 +1,5 @@
+// imports
 #include <Servo.h>
-
 #include "Helper.h"
 #include "Enums.h"
 #include "Place.h"
@@ -7,98 +7,87 @@
 #include "Arc.h"
 
 
+
+// global variables
 // ====== places ======
-Place *place0;
-Place *place1;
+Place *p_1;
+Place *p_3;
 Place **allPlaces;
 int allPlacesCount;
 
 // ====== transitions ======
-Transition *transition0;
-Transition *transition1;
+Transition *t_4;
+Transition *t_2;
 Transition **allTransitions;
 int allTransitionsCount;
 
 // ====== arcs ======
-Arc *arc0;
-Arc *arc1;
-Arc *arc2;
-Arc *arc3;
+Arc *a_150199539;
+Arc *a_1218347417;
+Arc *a_2040180576;
+Arc *a_2109493155;
 Arc **allArcs;
 int allArcsCount;
 
-void setup()
-{
-  Serial.begin(9600);
-  
-  // ====== general ======
-  allPlacesCount = 2;
-  allPlaces = (Place**) malloc(allPlacesCount*sizeof(Place*));
-  
-  allTransitionsCount = 2;
-  allTransitions = (Transition**) malloc(allTransitionsCount*sizeof(Transition*));
-  
-  allArcsCount = 4;
-  allArcs = (Arc**) malloc(allArcsCount*sizeof(Arc*));
 
 
-  // ====== places ======
-  //0.
-  place0 = new Place("place0", 13, digitalOut);
-  place0->setCapacity(10);
-  place0->setTokens(1);
-  allPlaces[0] = place0;
-  
-  //1.
-  place1 = new Place("place1", 7, digitalOut);
-  place1->setCapacity(10);
-  place1->setTokens(0);
-  allPlaces[1] = place1;
-  
-  
-  // ====== transitions ======  
-  transition0 = new Transition("t0", 0, analogIn);
-  transition0->setAnalogTreshold(80);
-  //transition0->setAnalogTresholdRange(80, 150);
-  allTransitions[0] = transition0;
-  
-  transition1 = new Transition("t1", 4, digitalIn);
-  allTransitions[1] = transition1;
-  
-  
-  // ====== arcs ======
-  arc0 = new Arc(place0, transition0);
-  allArcs[0] = arc0;
-  
-  arc1 = new Arc(transition0, place1);
-  allArcs[1] = arc1;
-  
-  arc2 = new Arc(place1, transition1);
-  allArcs[2] = arc2;
-  
-  arc3 = new Arc(transition1, place0);
-  allArcs[3] = arc3;
-  
-  
-  // ====== wiring parts together ======
-  Arc** t1arcs = (Arc**) malloc(2*sizeof(Arc*));
-  t1arcs[0] = arc0;
-  t1arcs[1] = arc1;
-  transition0->setConnectedArcs(t1arcs);
-  transition0->setConnectedArcsCount(2);
-  
-  
-  Arc** t2arcs = (Arc**) malloc(2*sizeof(Arc*));
-  t2arcs[0] = arc2;
-  t2arcs[1] = arc3;
-  transition1->setConnectedArcs(t2arcs);
-  transition1->setConnectedArcsCount(2);
-  
+// initial setup
+void setup() {
+Serial.begin(9600);
+
+// ====== general ======
+allPlacesCount = 2;
+allPlaces = (Place**) malloc(allPlacesCount*sizeof(Place*));
+allTransitionsCount = 2;
+allTransitions = (Transition**) malloc(allTransitionsCount*sizeof(Transition*));
+allArcsCount = 4;
+allArcs = (Arc**) malloc(allArcsCount*sizeof(Arc*));
+
+// ====== places ======
+p_1 = new Place("p_1", 8, DIGITAL_OUT);
+p_1->setCapacity(10);
+p_1->setTokens(1);
+allPlaces[0] = p_1;
+p_3 = new Place("p_3", 13, DIGITAL_OUT);
+p_3->setCapacity(10);
+p_3->setTokens(0);
+allPlaces[1] = p_3;
+
+// ====== transitions ======
+t_4 = new Transition("t_4", 4, DIGITAL_IN);
+t_4->setAnalogThreshold(80);
+allTransitions[0] = t_4;
+t_2 = new Transition("t_2", 0, ANALOG_IN);
+t_2->setAnalogThreshold(80);
+allTransitions[1] = t_2;
+
+// ====== arcs ======
+a_150199539 = new Arc(p_1, t_4);
+allArcs[0] = a_150199539;
+a_1218347417 = new Arc(t_4, p_3);
+allArcs[1] = a_1218347417;
+a_2040180576 = new Arc(t_2, p_1);
+allArcs[2] = a_2040180576;
+a_2109493155 = new Arc(p_3, t_2);
+allArcs[3] = a_2109493155;
+
+// ====== wiring parts together ======
+Arc** ta_4 = (Arc**) malloc( 2*sizeof(Arc*));
+ta_4[0] = a_150199539;
+ta_4[1] = a_1218347417;
+t_4->setConnectedArcs(ta_4);
+t_4->setConnectedArcsCount(2);
+Arc** ta_2 = (Arc**) malloc( 2*sizeof(Arc*));
+ta_2[0] = a_2040180576;
+ta_2[1] = a_2109493155;
+t_2->setConnectedArcs(ta_2);
+t_2->setConnectedArcsCount(2);
+
 }
 
-void loop()
-{  
-  for (int i = 0; i < allTransitionsCount; i++) {
+// main infinite loop
+void loop() {
+for (int i = 0; i < allTransitionsCount; i++) {
     if (allTransitions[i]->isEnabled()) {     // todo: more facny logic
       allTransitions[i]->fire();
     }
@@ -109,6 +98,5 @@ void loop()
   }
     
   Serial.println("=================================================");
-  delay(7000);
+  delay(70);
 }
-
